@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "554282945116",
+    "project_id": "graduation-c0521",
+    "storage_bucket": "graduation-c0521.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554282945116:android:c97f53c3058cc55615f499",
+        "android_client_info": {
+          "package_name": "com.example.sala7ly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrRN-O1N3z6NmkAclNbjIa9Nl6CKWXOJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
