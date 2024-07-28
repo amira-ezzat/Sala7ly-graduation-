@@ -1,15 +1,18 @@
-import '../../../model/userModel.dart';
-
 abstract class LoginState {}
 
 class LoginInitial extends LoginState {}
 
 class LoginLoadingState extends LoginState {}
 
+class ChangePasswordVisibilityState extends LoginState {}
+
 class LoginSuccessState extends LoginState {
-  final Sala7lyUserModel userModel;
-  LoginSuccessState(this.userModel);
-  // يمكنك إضافة الحقول الضرورية لتخزين بيانات الاستجابة الناجحة هنا
+  final String userToken;
+
+
+  LoginSuccessState(
+      this.userToken,
+      );
 }
 
 class LoginErrorState extends LoginState {
@@ -17,5 +20,3 @@ class LoginErrorState extends LoginState {
 
   LoginErrorState(this.error);
 }
-
-class LoginChangePasswordVisibilityState extends LoginState {}

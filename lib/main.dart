@@ -5,6 +5,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sala7ly/layout/layout_screen.dart';
 import 'package:sala7ly/modules/Drawer/profil/profile.dart';
 import 'package:sala7ly/modules/login/login.dart';
+import 'package:sala7ly/modules/register/veryEmail.dart';
+import 'package:sala7ly/modules/res_pass/new_password/newPass.dart';
+import 'package:sala7ly/modules/res_pass/otp_screen.dart';
 import 'package:sala7ly/modules/screens/order/order.dart';
 import 'package:sala7ly/modules/screens/order/server.dart';
 import 'package:sala7ly/modules/screens/create_order/order_services.dart';
@@ -22,9 +25,11 @@ import 'package:sala7ly/shared/styles/theme.dart';
 import 'firebase_options.dart';
 import 'layout/cubit/cubit.dart';
 import 'model/userModel.dart';
+import 'modules/Drawer/Drawing.dart';
 import 'modules/Drawer/profil/manage.dart';
 import 'modules/register/cubit/cubit.dart';
 import 'modules/register/register.dart';
+import 'modules/screens/create_order/cubit.dart';
 import 'modules/screens/home/animation_logo_screen/logo_screen.dart';
 import 'modules/screens/order_parts/payment.dart';
 import 'modules/screens/order_parts/succesful.dart';
@@ -46,44 +51,10 @@ void main() async {
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  final AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-  // FirebaseMessaging.onMessageOpenedApp.listen((event) {
-  //   print('on message opened app');
-  //   print(event.data.toString());
-  //   showToast(text: 'on message opened app', state: ToastState.SUCCESS);
-  // });
-
   FirebaseMessaging.onMessage.listen((event) {
     print('on message');
     print(event.data.toString());
     showToast(text: 'on message', state: ToastState.SUCCESS);
-
-    RemoteNotification? notification = event.notification;
-    AndroidNotification? android = event.notification?.android;
-
-    if (notification != null && android != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            'channel_id',
-            'channel_name',
-            channelDescription: 'channel_description',
-            importance: Importance.max,
-            priority: Priority.high,
-            showWhen: false,
-          ),
-        ),
-      );
-    }
   });
 
   Bloc.observer = MyBlocObserver();
@@ -93,7 +64,8 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   bool isDark = CacheHelper.getData(key: 'isDark') ?? false;
-
+ // String? token= await CacheHelper.getData(key: 'token');
+ // print(token);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en', 'US'), Locale('ar', 'EG')],
@@ -113,22 +85,33 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // ChangeNotifierProvider(
+        //   create: (context) => UserModel(),
+
+        // ),
         ChangeNotifierProvider<Sala7lyUserModel>(
           create: (_) => Sala7lyUserModel(),
         ),
-        ChangeNotifierProvider(create: (_) => ImageProviderNotifier()),
+       // ChangeNotifierProvider(create: (_) => ImageProviderNotifier()),
         BlocProvider(
           create: (BuildContext context) => SettingsCubit(),
         ),
         BlocProvider(
           create: (context) => sla7lyCubit(),
         ),
+        BlocProvider<RegisterCubit>(
+          create: (context) => RegisterCubit(), // Replace with your actual RegisterCubit initialization
+        ),
         BlocProvider(
           create: (BuildContext context) => AppCubit()..changeAppMode(fromShared: isDark),
         ),
         BlocProvider(
+          create: (BuildContext context) => OrderCubit(),
+        ),
+        BlocProvider(
           create: (_) => PartsBloc()..fetchProducts(),
         ),
+
       ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
@@ -141,7 +124,7 @@ class MyApp extends StatelessWidget {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: AppCubit.get(context).isDark ? ThemeMode.light : ThemeMode.dark,
-            home: Layout(),
+            home: LoginScreen(),
           );
         },
       ),

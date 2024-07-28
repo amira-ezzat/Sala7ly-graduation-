@@ -31,7 +31,7 @@ class _ServicesState extends State<Services> {
         ),
         leading: IconButton(
           onPressed: () {
-            navigateTo(context, Layout());
+           // navigateTo(context, Layout());
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
@@ -194,15 +194,15 @@ class _ServicesState extends State<Services> {
                     size: 50,
                     color: pressedCardServiceName == serviceName
                         ? Colors.white
-                        // : isDarkMode
-                        // ? Colors.white
+                    // : isDarkMode
+                    // ? Colors.white
                         : Colors.grey[600],
                   ),
                   onPressed: () {
                     setState(() {
                       pressedCardServiceName = serviceName;
                     });
-                    navigateTo(context, OrdServicess());
+                    navigateTo(context, OrdServices());
                   },
                 ),
                 Text(
@@ -211,8 +211,8 @@ class _ServicesState extends State<Services> {
                     fontSize: 12,
                     color: pressedCardServiceName == serviceName
                         ? Colors.white
-                        // : isDarkMode
-                        // ? Colors.white
+                    // : isDarkMode
+                    // ? Colors.white
                         : Colors.grey[600],
                   ),
                 ),

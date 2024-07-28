@@ -1,18 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:sala7ly/layout/layout_screen.dart';
+import 'package:sala7ly/modules/setting/ssettingss.dart';
+import 'package:sala7ly/shared/componants/navegate.dart';
 
-import '../../../layout/layout_screen.dart';
-import '../../../model/userModel.dart';
-import '../../../shared/componants/navegate.dart';
 import 'edit_profile.dart';
-import 'manage.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final Sala7lyUserModel userModel;
+  final Map<String, dynamic> userData;
 
-  ProfileScreen({required this.userModel});
+  ProfileScreen({required this.userData});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -21,15 +22,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   Color editProfileBorderColor = Colors.grey.shade800; // For Edit Profile button
   Color numberBorderColor = Colors.grey.shade800; // For Number button
-  Color emailBorderColor = Colors.grey.shade800;
-  var emailController = TextEditingController(); // For Email button
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialize emailController with userModel email
-    emailController.text = widget.userModel.email ?? '';
-  }
+  Color emailBorderColor = Colors.grey.shade800; // For Email button
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
-            navigateTo(context, Layout());
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -55,74 +48,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              Consumer<ImageProviderNotifier>(
-                builder: (context, imageProvider, child) {
-                  return Container(
-                    height: 200,
-                    child: Stack(
-                      alignment: AlignmentDirectional.bottomCenter,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional.topCenter,
-                          child: Container(
-                            height: 160.0,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              image: DecorationImage(
-                                image: imageProvider.coverImage,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+              Container(
+                height: 200,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.topCenter,
+                      child: Container(
+                        height: 160.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/c.jpg'),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        CircleAvatar(
-                          radius: 64.0,
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          child: CircleAvatar(
-                            radius: 60.0,
-                            backgroundImage: imageProvider.profileImage,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  );
-                },
+                    CircleAvatar(
+                      radius: 64.0,
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      child: CircleAvatar(
+                        radius: 60.0,
+                        backgroundImage: AssetImage('assets/images/moana.png'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 15.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.userModel.firstName ?? 'Amira'.tr(),
-                    style: TextStyle(
-                      fontFamily: 'font1',
-                      fontSize: 22,
-                    ),
-                  ),
-                  SizedBox(width: 8,),
-                  Text(
-                    widget.userModel.lastName ?? 'Ezzat'.tr(),
-                    style: TextStyle(
-                      fontFamily: 'font1',
-                      fontSize: 22,
-                    ),
-                  ),
-                ],
+              Text(
+                'First Name: ${widget.userData['firstName']}',
+                style: TextStyle(
+                  fontFamily: 'font1',
+                  fontSize: 22,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Last Name: ${widget.userData['lastName']}',
+                style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 40),
               Align(
                 alignment: AlignmentDirectional.topStart,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EditProfile()),
-                    );
+                    navigateTo(context, EditeProfile());
                   },
                   onTapDown: (_) {
                     setState(() {
-                      editProfileBorderColor = Color(0xFFF0630B); // Change color here
+                      editProfileBorderColor = Color(0xFFF0630B);
                     });
                   },
                   onTapUp: (_) {
@@ -140,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 50,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: editProfileBorderColor, // Use the specific borderColor variable
+                        color: editProfileBorderColor,
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(10.0),
@@ -211,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         SizedBox(width: 12.0),
                         Text(
-                          widget.userModel.phone ?? '01123279544'.tr(),
+                          'Number: ${widget.userData['phoneNumber']}',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Spacer(),
@@ -226,23 +204,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: GestureDetector(
                   onTap: () {
                     // Handle Email button tap
-                    setState(() {
-                      widget.userModel.email = emailController.text; // Update userModel with new email
-                    });
                   },
                   onTapDown: (_) {
                     setState(() {
-                      emailBorderColor = Color(0xFFF0630B); // Change border color
+                      emailBorderColor = Color(0xFFF0630B); // Reset color
                     });
                   },
                   onTapUp: (_) {
                     setState(() {
-                      emailBorderColor = Colors.grey.shade800; // Reset border color
+                      emailBorderColor = Colors.grey.shade800;
                     });
                   },
                   onTapCancel: () {
                     setState(() {
-                      emailBorderColor = Colors.grey.shade800; // Reset border color
+                      emailBorderColor = Colors.grey.shade800;
                     });
                   },
                   child: Container(
@@ -261,27 +236,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(width: 5),
                         Icon(Icons.email_outlined, color: Colors.grey),
                         SizedBox(width: 12.0),
-                        Expanded(
-                          child: TextField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Email'.tr(),
-                            ),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            onSubmitted: (value) {
-                              setState(() {
-                                widget.userModel.email = value; // Update userModel with new email
-                              });
-                            },
-                          ),
+                        Text(
+                          'Email: ${widget.userData['email']}',
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                       // Icon(Icons.edit, color: Colors.grey),
+                        Spacer(),
                       ],
                     ),
                   ),
                 ),
               ),
+              // ... (rest of the code)
             ],
           ),
         ),

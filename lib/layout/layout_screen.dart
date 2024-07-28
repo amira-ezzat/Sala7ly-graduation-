@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../modules/screens/home/home_screen.dart';
 import '../modules/screens/offer.dart';
 import '../modules/screens/order/order.dart';
@@ -13,6 +14,9 @@ import 'cubit/cubit.dart';
 import 'cubit/state.dart';
 
 class Layout extends StatefulWidget {
+  final String userToken;
+
+  Layout({required this.userToken});
   @override
   State<Layout> createState() => _LayoutState();
 }
@@ -22,6 +26,24 @@ class _LayoutState extends State<Layout> {
   late int selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize state or fetch data using the userToken
+    _fetchUserData();
+  }
+
+  void _fetchUserData() async {
+    try {
+      // Example: Fetch user data using the userToken
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final savedToken = prefs.getString('userToken');
+      // Use the token to fetch user data or initialize the state
+      print('User token: $savedToken');
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,

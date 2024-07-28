@@ -1,8 +1,9 @@
-import 'dart:ui';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import '../../layout/layout_screen.dart';
 
 class Confirm extends StatefulWidget {
@@ -11,6 +12,8 @@ class Confirm extends StatefulWidget {
   final String date;
   final String time;
   final String problem;
+  final bool isTypeSelected;
+  final bool isCashSelected;
 
   Confirm({
     required this.phoneNumber,
@@ -18,6 +21,8 @@ class Confirm extends StatefulWidget {
     required this.date,
     required this.time,
     required this.problem,
+    required this.isTypeSelected,
+    required this.isCashSelected,
   });
 
   @override
@@ -25,27 +30,33 @@ class Confirm extends StatefulWidget {
 }
 
 class _ConfirmState extends State<Confirm> {
-  bool isArabiclPressed = false;
-  bool isEnglishPressed = false;
+  bool isPressed = false;
 
-  Future<void> _saveOrderToFirestore() async {
-    await FirebaseFirestore.instance.collection('orders').add({
-      'phoneNumber': widget.phoneNumber,
-      'address': widget.address,
-      'date': widget.date,
-      'time': widget.time,
-      'problem': widget.problem,
+  Future<void> _createOrder() async {
+    final url = 'https://sala7ly.vercel.app/service-order';
+    final headers = {'Content-Type': 'application/json'};
+    final body = json.encode({
+      "shippingAddress": widget.address,
+      "problemDesc": widget.problem,
+      "orderDate": widget.date,
+      "orderTime": widget.time,
+      "orderType": widget.isTypeSelected ? "Normal" : "Emergency",
+      "phoneNumber": widget.phoneNumber,
     });
-  }
 
-  void _showSuccessSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Order sent successfully'.tr()),
-        duration: Duration(seconds: 2),
-        backgroundColor: Colors.green,
-      ),
-    );
+    try {
+      final response = await http.post(Uri.parse(url), headers: headers, body: body);
+      final responseData = json.decode(response.body);
+
+      if (response.statusCode == 201) {
+        print('Order created successfully: ${responseData['msg']}');
+       // navigateAndFinish(context, Layout()); // Navigate to the layout or orders screen
+      } else {
+        print('Failed to create order: ${responseData['msg']}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 
   @override
@@ -57,14 +68,10 @@ class _ConfirmState extends State<Confirm> {
             borderRadius: BorderRadius.circular(10),
           ),
           content: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Are you sure you want to confirm order?'.tr(),
-                style: TextStyle(
-                  color: Colors.grey[700],
-                  fontSize: 14,
-                ),
+                'Are you sure you want to confirm the order?'.tr(),
+                style: TextStyle(color: Colors.grey[700], fontSize: 14),
               ),
               SizedBox(height: 20),
               Row(
@@ -72,15 +79,12 @@ class _ConfirmState extends State<Confirm> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        setState(() {
-                          isArabiclPressed = true;
-                        });
-                        Navigator.pop(context); // Close the dialog
+                        Navigator.of(context).pop(); // Close the dialog
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {
-                            return isArabiclPressed ? Color(0xFFF0630B) : Colors.transparent;
+                            return isPressed ? Color(0xFFF0630B) : Colors.transparent;
                           },
                         ),
                         shape: MaterialStateProperty.all(
@@ -98,7 +102,7 @@ class _ConfirmState extends State<Confirm> {
                       child: Text(
                         'Cancel'.tr(),
                         style: TextStyle(
-                          color: isArabiclPressed ? Colors.white : Colors.black,
+                          color: isPressed ? Colors.white : Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -108,23 +112,16 @@ class _ConfirmState extends State<Confirm> {
                   SizedBox(width: 8),
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         setState(() {
-                          isEnglishPressed = true;
+                          isPressed = true;
                         });
-                        await _saveOrderToFirestore(); // Save data to Firestore
-                        _showSuccessSnackBar(context); // Show success SnackBar
-
-                        // Navigate to OrdersScreen after confirming the order
-                        await Future.delayed(Duration(seconds: 2)); // Delay for Snackbar visibility
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => Layout()),
-                        );
+                        _createOrder(); // Create order and handle API response
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {
-                            return isEnglishPressed ? Color(0xFFF0630B) : Colors.transparent;
+                            return isPressed ? Color(0xFFF0630B) : Colors.transparent;
                           },
                         ),
                         shape: MaterialStateProperty.all(
@@ -142,7 +139,7 @@ class _ConfirmState extends State<Confirm> {
                       child: Text(
                         'Yes'.tr(),
                         style: TextStyle(
-                          color: isEnglishPressed ? Colors.white : Colors.black,
+                          color: isPressed ? Colors.white : Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),

@@ -44,7 +44,7 @@ class Payment extends StatelessWidget {
                         fontSize: 22
                       ),),
                     SizedBox(width: 11),
-                    Text('Cable'.tr()
+                    Text('Drill'.tr()
                       ,style:TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey,
@@ -62,7 +62,7 @@ class Payment extends StatelessWidget {
                           fontSize: 22
                       ),),
                     SizedBox(width: 11),
-                    Text('200 '
+                    Text('60 '
                         'EG'.tr()
                       ,style:TextStyle(
                           fontWeight: FontWeight.bold,

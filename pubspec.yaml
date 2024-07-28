@@ -109,6 +109,12 @@ flutter:
     - family: font5
       fonts:
         - asset: assets/fonts/Rage Italic.ttf
+    - family: ss
+      fonts:
+        - asset: assets/fonts/san.ttf
+    - family: tt
+      fonts:
+        - asset: assets/fonts/ww.ttf
     - family: Magical
       fonts:
         - asset: assets/fonts/fffonts/Magical.otf

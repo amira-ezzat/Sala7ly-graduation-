@@ -198,7 +198,7 @@
   "send an 6 digit OTP with instruction to reset your password": "نرسل لك كلمة المرور لمرة واحدة (OTP) المكونة من 6 أرقام مع تعليمات لإعادة تعيين كلمة المرور الخاصة بك",
   "          Enter OTP Send to  ": "  أدخل OTP المرسلة إلى",
   "Don't receive the OTP": "لا تتلقى OTP",
-  "your new password must be different from\nprevious used password.": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا."
-
+  "your new password must be different from\nprevious used password.": "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة سابقًا.",
+"Masaft Elseka": "مسافة السكة"
 
 }

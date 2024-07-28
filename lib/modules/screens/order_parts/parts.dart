@@ -50,7 +50,7 @@ class _PartsScreenState extends State<PartsScreen> {
         ),
         leading: IconButton(
           onPressed: () {
-            navigateTo(context, Layout());
+          //  navigateTo(context, Layout());
           },
           icon: Icon(Icons.arrow_back_ios),
         ),

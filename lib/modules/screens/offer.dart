@@ -2,12 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../layout/layout_screen.dart';
-import '../../shared/componants/navegate.dart';
-import '../Drawer/profil/profile.dart';
-
 class Offers extends StatelessWidget {
-
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +11,7 @@ class Offers extends StatelessWidget {
         leading:IconButton(
           icon:Icon(Icons.arrow_back_ios),
           onPressed: () {
-            navigateTo(context, Layout());
+            //navigateTo(context, Layout());
           },),
         title:Text(
           'Offers'.tr(),

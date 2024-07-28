@@ -1,27 +1,30 @@
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:provider/provider.dart';
 import 'package:sala7ly/layout/layout_screen.dart';
 import 'package:sala7ly/modules/Drawer/profil/profile.dart';
 import 'package:sala7ly/modules/screens/home/animation_logo_screen/logo_screen.dart';
 import 'package:sala7ly/modules/setting/ssettingss.dart';
-import '../../model/userModel.dart';
 import '../../shared/componants/navegate.dart';
 import '../../shared/cubit/cubit.dart';
+
 class Draw extends StatefulWidget {
+  final Map<String, dynamic> userData; // Add userData parameter
+
+  Draw({required this.userData}); // Initialize userData in the constructor
+
   @override
   State<Draw> createState() => _DrawState();
 }
+
 class _DrawState extends State<Draw> {
   Color borderColor1 = Colors.grey.shade500;
   Color borderColor2 = Colors.grey.shade500;
   Color borderColor3 = Colors.grey.shade500;
   bool isCancelPressed = false;
   bool isYesPressed = false;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -30,16 +33,14 @@ class _DrawState extends State<Draw> {
         children: <Widget>[
           Container(
             height: 177,
-            color:AppCubit.get(context).isDark?  HexColor('#FDE8DA'):Colors.grey[900] ,
+            color: AppCubit.get(context).isDark ? HexColor('#FDE8DA') : Colors.grey[900],
             child: DrawerHeader(
-
               child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.start,
-                //mainAxisSize: MainAxisSize.max,
                 children: [
                   CircleAvatar(
-                    radius: 30.0,backgroundColor: HexColor('#FACFB3'),
-                    backgroundImage:AssetImage('assets/images/1.png',)
+                    radius: 30.0,
+                    backgroundColor: HexColor('#FACFB3'),
+                    backgroundImage: AssetImage('assets/images/1.png'),
                   ),
                   Text(
                     'Sala7ly'.tr(),
@@ -54,15 +55,12 @@ class _DrawState extends State<Draw> {
               ),
             ),
           ),
-          SizedBox(height: 52,),
+          SizedBox(height: 52),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
               onTap: () {
-                final userModel = Provider.of<Sala7lyUserModel>(context, listen: false); // أو من حيثما تحصل على userModel
-                navigateTo(context, ProfileScreen(userModel: userModel));
-
-
+                navigateTo(context, ProfileScreen(userData: widget.userData)); // Pass userData to ProfileScreen
               },
               onTapDown: (_) {
                 setState(() {
@@ -103,19 +101,18 @@ class _DrawState extends State<Draw> {
                     SizedBox(width: 12.0),
                     Text(
                       'My Profile'.tr(),
-                      style:Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      //color: Colors.grey[800],
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: GestureDetector(
@@ -161,25 +158,22 @@ class _DrawState extends State<Draw> {
                     SizedBox(width: 12.0),
                     Text(
                       'Settings'.tr(),
-                      style:Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                    // color: Theme.of(context).iconTheme.color,
-                     // color: Colors.grey[800],
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          SizedBox(height: 20,),
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: GestureDetector(
               onTap: () {
-
                 showModalBottomSheet(
                   context: context,
                   shape: const RoundedRectangleBorder(
@@ -187,7 +181,6 @@ class _DrawState extends State<Draw> {
                       top: Radius.circular(25.0),
                     ),
                   ),
-                  //backgroundColor: Colors.white, // <-- Background color
                   builder: (context) {
                     return SizedBox(
                       height: 200,
@@ -195,15 +188,14 @@ class _DrawState extends State<Draw> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
-                        children:  <Widget>[
+                        children: <Widget>[
                           Center(
                             child: Text(
                               'Log Out'.tr(),
                               style: TextStyle(
-                                  color: Color(0xFFF0630B),
-                                  fontSize: 28,
-                                  // fontFamily: 'font1',
-                                  fontWeight: FontWeight.bold
+                                color: Color(0xFFF0630B),
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -214,8 +206,8 @@ class _DrawState extends State<Draw> {
                             child: Text(
                               'Are your sure you want to log out?'.tr(),
                               style: TextStyle(
-                                  color: Colors.grey[700],
-                                  fontSize: 14
+                                color: Colors.grey[700],
+                                fontSize: 14,
                               ),
                             ),
                           ),
@@ -231,16 +223,14 @@ class _DrawState extends State<Draw> {
                                   child: OutlinedButton(
                                     onPressed: () {
                                       setState(() {
-                                        // Add a variable to track whether the button is pressed
                                         isCancelPressed = true;
                                       });
-                                      navigateAndFinish(context, Layout());
+                                      Navigator.pop(context);
                                     },
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                                             (Set<MaterialState> states) {
-                                          // Change the background color based on the button state
-                                          return isCancelPressed ?  Color(0xFFF0630B) : Colors.transparent;
+                                          return isCancelPressed ? Color(0xFFF0630B) : Colors.transparent;
                                         },
                                       ),
                                       shape: MaterialStateProperty.all(
@@ -265,12 +255,11 @@ class _DrawState extends State<Draw> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 10,),
+                                SizedBox(width: 10),
                                 Expanded(
                                   child: OutlinedButton(
                                     onPressed: () {
                                       setState(() {
-                                        // Add a variable to track whether the button is pressed
                                         isYesPressed = true;
                                       });
                                       navigateAndFinish(context, LogoScreen());
@@ -278,8 +267,7 @@ class _DrawState extends State<Draw> {
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                                             (Set<MaterialState> states) {
-                                          // Change the background color based on the button state
-                                          return isYesPressed ?  Color(0xFFF0630B) : Colors.transparent;
+                                          return isYesPressed ? Color(0xFFF0630B) : Colors.transparent;
                                         },
                                       ),
                                       shape: MaterialStateProperty.all(
@@ -348,19 +336,18 @@ class _DrawState extends State<Draw> {
                       width: 5,
                     ),
                     SvgPicture.asset(
-                      'assets/image/out.svg',
+                      'assets/image/logout.svg',
                       width: 24,
                       height: 24,
                     ),
                     SizedBox(width: 12.0),
                     Text(
                       'Log Out'.tr(),
-                      style:Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      //color: Colors.grey[800],
                     ),
                   ],
                 ),

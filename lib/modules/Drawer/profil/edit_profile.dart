@@ -1,62 +1,33 @@
-import 'dart:typed_data';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:image_picker/image_picker.dart';
-import 'manage.dart';
+import 'package:sala7ly/modules/Drawer/profil/profile.dart';
+import 'package:sala7ly/shared/componants/navegate.dart';
 
-class EditProfile extends StatefulWidget {
-  @override
-  State<EditProfile> createState() => _EditProfileState();
-}
+import '../../../shared/cubit/cubit.dart';
+import '../../../shared/styles/icon.dart';
 
-class _EditProfileState extends State<EditProfile> {
+class EditeProfile extends StatelessWidget {
   var emailController = TextEditingController();
   var firstController = TextEditingController();
   var lastController = TextEditingController();
-
-  Uint8List? _coverImage;
-  Uint8List? _profileImage;
-
-  void selectImage(bool isCover) async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      if (isCover) {
-        _coverImage = img;
-      } else {
-        _profileImage = img;
-      }
-    });
-  }
-
-  Future<Uint8List> pickImage(ImageSource source) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
-    if (pickedFile != null) {
-      return await pickedFile.readAsBytes();
-    }
-    throw Exception('No image selected');
-  }
-
   @override
   Widget build(BuildContext context) {
-    final imageProvider = Provider.of<ImageProviderNotifier>(context);
-
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+        leading:IconButton(
+          icon:Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
+            //navigateTo(context, ProfileScreen());
+          },),
+        title:Text(
           'Edit Profile'.tr(),
           style: TextStyle(
             color: Color(0xFFF0630B),
             fontSize: 25,
             fontFamily: 'font1',
+            // fontWeight: FontWeight.bold
           ),
         ),
       ),
@@ -77,25 +48,27 @@ class _EditProfileState extends State<EditProfile> {
                           alignment: AlignmentDirectional.topCenter,
                           child: Container(
                             height: 154.0,
-                            width: 340,
+                            width:340,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13.0),
                               image: DecorationImage(
-                                image: _coverImage != null
-                                    ? MemoryImage(_coverImage!)
-                                    : imageProvider.coverImage,
+                                image: AssetImage('assets/images/c.jpg'),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
+
+
                         ),
                         IconButton(
-                          onPressed: () => selectImage(true),
+                          onPressed: () {
+
+                          },
                           icon: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 11.0,
                             child: Icon(
-                              Icons.camera_alt,
+                              IconBroken.Camera,
                               color: Colors.black,
                               size: 11,
                             ),
@@ -108,21 +81,23 @@ class _EditProfileState extends State<EditProfile> {
                       children: [
                         CircleAvatar(
                           radius: 64.0,
-                          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          backgroundColor: Theme
+                              .of(context)
+                              .scaffoldBackgroundColor,
                           child: CircleAvatar(
                             radius: 60.0,
-                            backgroundImage: _profileImage != null
-                                ? MemoryImage(_profileImage!)
-                                : imageProvider.profileImage,
+                            backgroundImage:AssetImage('assets/images/moana.png'),
                           ),
                         ),
                         IconButton(
-                          onPressed: () => selectImage(false),
+                          onPressed: () {
+
+                          },
                           icon: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 11.0,
                             child: Icon(
-                              Icons.camera_alt,
+                              IconBroken.Camera,
                               color: Colors.black,
                               size: 11,
                             ),
@@ -133,129 +108,126 @@ class _EditProfileState extends State<EditProfile> {
                   ],
                 ),
               ),
-              SizedBox(height: 30.0),
+              SizedBox(
+                height: 30.0,
+              ),
               Align(
                 alignment: AlignmentDirectional.topStart,
                 child: Text(
                   '  First Name'.tr(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey.shade500,
-                    fontSize: 16,
+                      color: Colors.grey.shade500,
+                      fontSize: 16
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-                child: TextFormField(
-                  controller: firstController,
-                  keyboardType: TextInputType.emailAddress,
-                  cursorColor: Colors.grey.shade500,
-                  decoration: InputDecoration(
+              TextFormField(
+                controller: firstController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  // labelText: 'First Name',
                     labelStyle: TextStyle(
-                      fontFamily: 'font4',
-                      color: Colors.grey.shade400,
-                      fontSize: 16,
+                        fontFamily: 'font4'
+                        ,color: Colors.grey.shade400,
+                        fontSize: 16
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(7.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(7.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                  ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15)
                 ),
+
               ),
-              SizedBox(height: 11.0),
+              SizedBox(
+                height: 11.0,
+              ),
               Align(
                 alignment: AlignmentDirectional.topStart,
                 child: Text(
                   '  Last Name'.tr(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey.shade500,
-                    fontSize: 16,
+                      color: Colors.grey.shade500,
+                      fontSize: 16
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-                child: TextFormField(
-                  controller: lastController,
-                  keyboardType: TextInputType.emailAddress,
-                  cursorColor: Colors.grey.shade500,
-                  decoration: InputDecoration(
+              TextFormField(
+                controller: firstController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  // labelText: 'First Name',
                     labelStyle: TextStyle(
-                      fontFamily: 'font4',
-                      color: Colors.grey.shade400,
-                      fontSize: 16,
+                        fontFamily: 'font4'
+                        ,color: Colors.grey
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(7.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(7.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                  ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15)
                 ),
+
               ),
-              SizedBox(height: 11.0),
+              SizedBox(
+                height: 11.0,
+              ),
               Align(
                 alignment: AlignmentDirectional.topStart,
                 child: Text(
                   '  Email Or Mobile Number'.tr(),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey.shade500,
-                    fontSize: 16,
+                      color: Colors.grey.shade500,
+                      fontSize: 16
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-                child: TextFormField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  cursorColor: Colors.grey.shade500,
-                  decoration: InputDecoration(
+              TextFormField(
+                controller: firstController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  // labelText: 'First Name',
                     labelStyle: TextStyle(
-                      fontFamily: 'font4',
-                      color: Colors.grey.shade400,
-                      fontSize: 16,
+                        fontFamily: 'font4'
+                        ,color: Colors.grey
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(7.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(7.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                  ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15)
                 ),
+
               ),
-              SizedBox(height: 40.0),
+              SizedBox(
+                height: 40.0,
+              ),
               Container(
                 decoration: BoxDecoration(
-                  color: HexColor('#D8590A'),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(7.0),
+                  color:AppCubit.get(context).isDark?  HexColor('#F0630B'):HexColor('#D8590A') ,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
                   ),
                 ),
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () {
-                    if (_coverImage != null) {
-                      imageProvider.setCoverImage(MemoryImage(_coverImage!));
-                    }
-                    if (_profileImage != null) {
-                      imageProvider.setProfileImage(MemoryImage(_profileImage!));
-                    }
-                    Navigator.pop(context);
+
                   },
                   child: Text(
                     'Save & Update'.tr(),
@@ -268,6 +240,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ),
               ),
+
             ],
           ),
         ),

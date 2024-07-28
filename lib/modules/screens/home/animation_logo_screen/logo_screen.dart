@@ -15,11 +15,11 @@ class LogoScreen extends StatelessWidget {
             Image.asset('assets/images/1.png'),
             Spacer(),
             Text(
-              'Sala7ly'.tr(),
+              'Masaft Elseka'.tr(),
             style: TextStyle(
             fontWeight: FontWeight.w500,
-              fontFamily: 'Magical',
-              fontSize: 60,
+              fontFamily: 'ss',
+              fontSize: 40,
               color: HexColor('#F0630B'),
             ),
             ),

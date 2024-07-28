@@ -47,7 +47,7 @@ class _PaySuccessState extends State<PaySuccess> {
                       isArabiclPressed = true;
                     });
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => Layout()),
+                      MaterialPageRoute(builder: (_) => Layout(userToken: '',)),
                     );
                      // Close the dialog
                   },

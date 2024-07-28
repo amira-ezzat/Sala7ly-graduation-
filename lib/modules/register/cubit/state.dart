@@ -1,23 +1,29 @@
-import '../../../model/userModel.dart';
+// state.dart
 
 abstract class RegisterState {}
 
-class RegisterInitialState extends RegisterState {}
+class RegisterInitial extends RegisterState {}
 
-class RegisterLoadingState extends RegisterState {}
+class RegisterLoading extends RegisterState {}
+class EmailVerificationSent extends RegisterState {}
+// class RegisterSuccessEmail extends RegisterState {
+//   final String email;
+//
+//   RegisterSuccess(this.email);
+// }
+class RegisterSuccess extends RegisterState {
+  final String userToken;
 
-class RegisterSuccessState extends RegisterState {
-  final Sala7lyUserModel userModel;
-
-  RegisterSuccessState(this.userModel);
+  RegisterSuccess(this.userToken);
 }
-
-class RegisterErrorState extends RegisterState {
+class RegisterError extends RegisterState {
   final String error;
 
-  RegisterErrorState(this.error);
+  RegisterError(this.error);
 }
 
-class RegisterChangePasswordVisibilityState extends RegisterState {}
+class ChangePassVisibility extends RegisterState {}
 
-class RegisterChangeConfirmPasswordVisibilityState extends RegisterState {}
+class ChangecPassVisibility extends RegisterState {}
+
+class EmailVerified extends RegisterState {}

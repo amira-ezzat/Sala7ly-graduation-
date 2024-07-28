@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,16 +8,15 @@ import '../../layout/layout_screen.dart';
 import '../../shared/componants/navegate.dart';
 import '../../shared/componants/textFormField.dart';
 import '../../shared/cubit/cubit.dart';
-import '../Drawer/profil/profile.dart';
 import '../register/register.dart';
 import '../res_pass/resetpass.dart';
 import 'cubit/cubit.dart';
 import 'cubit/state.dart';
 
 class LoginScreen extends StatelessWidget {
-  var formKey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,12 @@ class LoginScreen extends StatelessWidget {
                 behavior: SnackBarBehavior.floating,
               ),
             );
-            navigateAndFinish(context, Layout());
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => Layout(userToken: state.userToken),
+              ),
+                  (Route<dynamic> route) => false,
+            );
           } else if (state is LoginErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -45,7 +50,14 @@ class LoginScreen extends StatelessWidget {
         },
         builder: (BuildContext context, LoginState state) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  // navigateTo(context, FirstLogin());
+                },
+              ),
+            ),
             body: SingleChildScrollView(
               child: Center(
                 child: Padding(
@@ -79,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                           label: 'Email Address'.tr(),
                           prefix: Icons.email_outlined,
                         ),
-                        SizedBox(height: 15.0),
+                        SizedBox(height: 13.0),
                         defaultTextFormField(
                           controller: passwordController,
                           type: TextInputType.visiblePassword,
@@ -112,39 +124,41 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 6.0),
-                        state is! LoginLoadingState
-                            ? Container(
-                          decoration: BoxDecoration(
-                            color: AppCubit.get(context).isDark
-                                ? HexColor('#F0630B')
-                                : HexColor('#D8590A'),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8.0),
+                        ConditionalBuilder(
+                          condition: state is! LoginLoadingState,
+                          builder: (BuildContext context) => Container(
+                            decoration: BoxDecoration(
+                              color: AppCubit.get(context).isDark
+                                  ? HexColor('#F0630B')
+                                  : HexColor('#D8590A'),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                          ),
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                LoginCubit.get(context).userLogin(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                );
-                              }
-                            },
-                            child: Text(
-                              'Sign in'.tr(),
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  LoginCubit.get(context).userLogin(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Sign in'.tr(),
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        )
-                            : CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Color(0xFFF0630B)),
+                          fallback: (BuildContext context) => Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color(0xFFF0630B)),
+                            ),
+                          ),
                         ),
                         SizedBox(height: 15.0),
                         Row(

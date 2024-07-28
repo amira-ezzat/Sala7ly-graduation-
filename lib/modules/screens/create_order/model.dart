@@ -1,22 +1,31 @@
-class MyOrder {
+class Order {
+  final String serviceId;
+  final String shippingAddress;
+  final String problemDesc;
+  final String orderDate;
+  final String orderTime;
+  final String orderType;
   final String phoneNumber;
-  final String date;
-  final String time;
-  final String problem;
 
-  MyOrder({
+  Order({
+    required this.serviceId,
+    required this.shippingAddress,
+    required this.problemDesc,
+    required this.orderDate,
+    required this.orderTime,
+    required this.orderType,
     required this.phoneNumber,
-    required this.date,
-    required this.time,
-    required this.problem,
   });
 
-  factory MyOrder.fromMap(Map<String, dynamic> map) {
-    return MyOrder(
-      phoneNumber: map['phoneNumber'],
-      date: map['date'],
-      time: map['time'],
-      problem: map['problem'],
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'serviceId': serviceId,
+      'shippingAddress': shippingAddress,
+      'problemDesc': problemDesc,
+      'orderDate': orderDate,
+      'orderTime': orderTime,
+      'orderType': orderType,
+      'phoneNumber': phoneNumber,
+    };
   }
 }

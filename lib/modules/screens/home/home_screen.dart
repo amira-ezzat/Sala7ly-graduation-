@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        drawer: Draw(),
+       // drawer: Draw(),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
@@ -175,15 +175,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 50,
                 color: pressedCardServiceName == serviceName
                     ? Colors.white
-                    // : AppCubit.get(context).isDark
-                    // ? Colors.white
+                // : AppCubit.get(context).isDark
+                // ? Colors.white
                     : Colors.grey[600],
               ),
               onPressed: () {
                 setState(() {
                   pressedCardServiceName = serviceName;
                 });
-                navigateTo(context, OrdServicess());
+                navigateTo(context, OrdServices());
               },
             ),
             Text(
@@ -192,8 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 12,
                 color: pressedCardServiceName == serviceName
                     ? Colors.white
-                    // : AppCubit.get(context).isDark
-                    // ? Colors.white
+                // : AppCubit.get(context).isDark
+                // ? Colors.white
                     : Colors.grey[600],
               ),
             ),
