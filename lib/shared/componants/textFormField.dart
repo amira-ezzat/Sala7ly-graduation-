@@ -23,6 +23,7 @@ Widget defaultTextFormField({
       height: 50,
       child: TextFormField(
         controller: controller,
+
         keyboardType: type,
         cursorColor: Colors.grey.shade500,
         obscureText: isPassword,

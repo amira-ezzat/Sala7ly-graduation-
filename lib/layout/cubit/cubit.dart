@@ -15,18 +15,19 @@ import '../../modules/screens/serviceasfire/services.dart';
 import '../../shared/componants/constant.dart';
 
 class sla7lyCubit extends Cubit<sal7lyState> {
-  sla7lyCubit() : super(InitialState()) {
+  final String userToken;
+  sla7lyCubit({required this.userToken,}) : super(InitialState()) {
     // إعداد الشاشات في دالة البناء
     screens = [
-      HomeScreen(),
-      Services(),
-      Orders(ordersList: ordersList),
+      HomeScreen(userToken: userToken,),
+      Services(userToken:userToken,),
+      Orders(),
       Offers(),
-      PartsScreen(ordersList: ordersList),
+      OrderParts(),
     ];
   }
 
-  List<Parts> ordersList = [];
+ // List<Parts> ordersList = [];
 
   static sla7lyCubit get(context) => BlocProvider.of(context);
   Sala7lyUserModel? userModel;

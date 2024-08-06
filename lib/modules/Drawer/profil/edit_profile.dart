@@ -38,45 +38,7 @@ class EditeProfile extends StatelessWidget {
             children: [
               Container(
                 height: 200,
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  children: [
-                    Stack(
-                      alignment: AlignmentDirectional.topEnd,
-                      children: [
-                        Align(
-                          alignment: AlignmentDirectional.topCenter,
-                          child: Container(
-                            height: 154.0,
-                            width:340,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13.0),
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/c.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-
-
-                        ),
-                        IconButton(
-                          onPressed: () {
-
-                          },
-                          icon: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 11.0,
-                            child: Icon(
-                              IconBroken.Camera,
-                              color: Colors.black,
-                              size: 11,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Stack(
+                child:Stack(
                       alignment: AlignmentDirectional.bottomEnd,
                       children: [
                         CircleAvatar(
@@ -105,8 +67,7 @@ class EditeProfile extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ],
-                ),
+
               ),
               SizedBox(
                 height: 30.0,

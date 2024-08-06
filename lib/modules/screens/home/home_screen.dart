@@ -7,9 +7,12 @@ import '../../../shared/componants/navegate.dart';
 import '../../../shared/cubit/cubit.dart';
 import '../../../shared/styles/icon.dart';
 import '../../Drawer/Drawing.dart';
-import '../create_order/order_services.dart';
+import '../order_services/order_services.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String userToken; // Add userToken here
+
+  HomeScreen({required this.userToken});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -86,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-       // drawer: Draw(),
+        drawer: Draw(userToken:widget.userToken,),
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
@@ -183,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   pressedCardServiceName = serviceName;
                 });
-                navigateTo(context, OrdServices());
+               // navigateTo(context, OrdServices());
               },
             ),
             Text(

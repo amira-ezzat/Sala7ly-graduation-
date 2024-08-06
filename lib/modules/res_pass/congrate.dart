@@ -67,7 +67,7 @@ class CongrateScreen extends StatelessWidget {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Layout(userToken: userToken),
+                        builder: (context) => Layout(userToken: userToken,),
                       ),
                     );
                   },

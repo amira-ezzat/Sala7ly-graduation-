@@ -57,11 +57,11 @@ class _LayoutState extends State<Layout> {
               updateSelectedIndex(int);
             },
             children: <Widget>[
-              HomeScreen(),
-              Services(),
-              Orders(ordersList: cubit.ordersList),
+              HomeScreen(userToken:widget.userToken,),
+             Services(userToken:widget.userToken,),
+              Orders(),
               Offers(),
-              PartsScreen(ordersList: cubit.ordersList),
+              OrderParts(),
             ],
             physics: NeverScrollableScrollPhysics(),
           );

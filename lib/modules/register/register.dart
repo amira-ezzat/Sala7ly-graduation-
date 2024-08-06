@@ -240,63 +240,64 @@ class RegisterPage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+
                           ),
                         ),
                         SizedBox(height: 15.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 130.0,
-                              height: 1.0,
-                              color: Colors.grey[600],
-                            ),
-                            Text('  OR  '.tr()),
-                            Container(
-                              width: 130.0,
-                              height: 1.0,
-                              color: Colors.grey[600],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.0),
-                        Text(
-                          'Continue with'.tr(),
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'assets/images/g.png',
-                                height: 20.0,
-                                width: 20.0,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.facebook,
-                                size: 25.0,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.apple,
-                                size: 28.0,
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Container(
+                        //       width: 130.0,
+                        //       height: 1.0,
+                        //       color: Colors.grey[600],
+                        //     ),
+                        //     Text('  OR  '.tr()),
+                        //     Container(
+                        //       width: 130.0,
+                        //       height: 1.0,
+                        //       color: Colors.grey[600],
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 15.0),
+                        // Text(
+                        //   'Continue with'.tr(),
+                        //   style: TextStyle(
+                        //     fontSize: 15.0,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Image.asset(
+                        //         'assets/images/g.png',
+                        //         height: 20.0,
+                        //         width: 20.0,
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: 20),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.facebook,
+                        //         size: 25.0,
+                        //         color: Colors.blue,
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: 20),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.apple,
+                        //         size: 28.0,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

@@ -1,29 +1,21 @@
+//... الكود السابق
+
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import '../../layout/layout_screen.dart';
+import '../../shared/componants/navegate.dart';
+import 'order_services/model.dart';
+import 'order_services/order_services.dart';
 
 class Confirm extends StatefulWidget {
-  final String phoneNumber;
-  final String address;
-  final String date;
-  final String time;
-  final String problem;
-  final bool isTypeSelected;
-  final bool isCashSelected;
+  final Order order;
+  final String userToken;
 
-  Confirm({
-    required this.phoneNumber,
-    required this.address,
-    required this.date,
-    required this.time,
-    required this.problem,
-    required this.isTypeSelected,
-    required this.isCashSelected,
-  });
+  Confirm({required this.order, required this.userToken});
 
   @override
   State<Confirm> createState() => _ConfirmState();
@@ -31,31 +23,56 @@ class Confirm extends StatefulWidget {
 
 class _ConfirmState extends State<Confirm> {
   bool isPressed = false;
+  bool isArabiclPressed = false;
+  bool isEnglishPressed = false;
+  Future<void> submitOrder() async {
+    final order = widget.order;
 
-  Future<void> _createOrder() async {
-    final url = 'https://sala7ly.vercel.app/service-order';
-    final headers = {'Content-Type': 'application/json'};
-    final body = json.encode({
-      "shippingAddress": widget.address,
-      "problemDesc": widget.problem,
-      "orderDate": widget.date,
-      "orderTime": widget.time,
-      "orderType": widget.isTypeSelected ? "Normal" : "Emergency",
-      "phoneNumber": widget.phoneNumber,
-    });
+    // التحقق من صحة جميع الحقول
+    if (order.serviceId.isEmpty ||
+        order.shippingAddress.isEmpty ||
+        order.problemDesc.isEmpty ||
+        order.orderDate.isEmpty ||
+        order.orderTime.isEmpty ||
+        order.orderType.isEmpty ||
+        order.phoneNumber.isEmpty) {
+      // عرض رسالة خطأ للمستخدم
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill in all fields.'.tr()),
+        ),
+      );
+      return;
+    }
 
-    try {
-      final response = await http.post(Uri.parse(url), headers: headers, body: body);
-      final responseData = json.decode(response.body);
+    final response = await http.post(
+      Uri.parse('https://sala7ly.vercel.app/service-order'),
+      headers: {
+        'Content-Type': 'application/json',
+        'accesstoken': widget.userToken,
+      },
+      body: json.encode(order.toJson()),
+    );
 
-      if (response.statusCode == 201) {
-        print('Order created successfully: ${responseData['msg']}');
-       // navigateAndFinish(context, Layout()); // Navigate to the layout or orders screen
-      } else {
-        print('Failed to create order: ${responseData['msg']}');
-      }
-    } catch (error) {
-      print('Error: $error');
+    if (response.statusCode == 201) {
+      // Successfully submitted the order
+      ScaffoldMessenger.of(context).showSnackBar(
+
+        SnackBar(
+          content: Text('Your order has been successfully submitted.'.tr()),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+
+       navigateAndFinish(context, Layout(userToken: '',));
+    } else {
+      // في حالة الفشل
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to submit the order. Please try again.'.tr()),
+        ),
+      );
     }
   }
 
@@ -68,6 +85,7 @@ class _ConfirmState extends State<Confirm> {
             borderRadius: BorderRadius.circular(10),
           ),
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Are you sure you want to confirm the order?'.tr(),
@@ -79,12 +97,17 @@ class _ConfirmState extends State<Confirm> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
+                        setState(() {
+                          // Add a variable to track whether the button is pressed
+                          isArabiclPressed = true;
+                        });
+                        //navigateAndFinish(context, OrdServices());
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {
-                            return isPressed ? Color(0xFFF0630B) : Colors.transparent;
+                            // Change the background color based on the button state
+                            return isArabiclPressed ?  Color(0xFFF0630B) : Colors.transparent;
                           },
                         ),
                         shape: MaterialStateProperty.all(
@@ -102,26 +125,30 @@ class _ConfirmState extends State<Confirm> {
                       child: Text(
                         'Cancel'.tr(),
                         style: TextStyle(
-                          color: isPressed ? Colors.white : Colors.black,
+                          color: isArabiclPressed ? Colors.white : Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 10),
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
                         setState(() {
-                          isPressed = true;
+                          // Add a variable to track whether the button is pressed
+                          isEnglishPressed = true;
+
                         });
-                        _createOrder(); // Create order and handle API response
+                        submitOrder();
+                        // navigateAndFinish(context, Layout());
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {
-                            return isPressed ? Color(0xFFF0630B) : Colors.transparent;
+                            // Change the background color based on the button state
+                            return isEnglishPressed ?  Color(0xFFF0630B) : Colors.transparent;
                           },
                         ),
                         shape: MaterialStateProperty.all(
@@ -139,7 +166,7 @@ class _ConfirmState extends State<Confirm> {
                       child: Text(
                         'Yes'.tr(),
                         style: TextStyle(
-                          color: isPressed ? Colors.white : Colors.black,
+                          color: isEnglishPressed ? Colors.white : Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),

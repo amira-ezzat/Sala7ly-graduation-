@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -133,20 +134,23 @@ class _OtpScreenState extends State<OtpScreen> {
                     'Don’t receive the OTP'.tr(),
                     style: TextStyle(fontSize: 16.0, fontFamily: 'font2'),
                   ),
-                  Text(
-                    'OTP'.tr(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16.0,
-                    ),
-                  ),
+                  // Text(
+                  //   'OTP'.tr(),
+                  //   style: TextStyle(
+                  //     fontWeight: FontWeight.w900,
+                  //     fontSize: 16.0,
+                  //   ),
+                  // ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                  onPressed: () async {
+      // استدعاء دالة إعادة إرسال الرمز
+      await _resendCode();
+      },
                     child: Text(
                       'RESEND'.tr(),
                       style: TextStyle(
@@ -201,5 +205,44 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ),
     );
+  }
+  Future<void> _resendCode() async {
+    try {
+      final response = await Dio().post(
+        'https://sala7ly.vercel.app/userAuth/resendcode',
+        data: {
+          'email': widget.email,
+        },
+
+      );
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        // عرض رسالة نجاح باستخدام ScaffoldMessenger
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Code sent successfully').tr(),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        // عرض رسالة خطأ باستخدام ScaffoldMessenger
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to resend code: ${response.data['msg']}').tr(),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error resending code: $e');
+      // عرض رسالة خطأ عامة باستخدام ScaffoldMessenger
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An unexpected error occurred. Please try again.').tr(),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

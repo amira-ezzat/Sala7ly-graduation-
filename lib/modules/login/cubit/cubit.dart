@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sala7ly/modules/login/cubit/state.dart';
-import '../../../shared/network/end_point.dart';
-import '../../../shared/network/remote/dio_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:sala7ly/modules/login/cubit/state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
@@ -45,5 +43,4 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginErrorState('An error occurred: ${error.toString()}'));
     }
   }
-
 }

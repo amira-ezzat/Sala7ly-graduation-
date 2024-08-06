@@ -10,8 +10,7 @@ import 'package:sala7ly/modules/res_pass/new_password/newPass.dart';
 import 'package:sala7ly/modules/res_pass/otp_screen.dart';
 import 'package:sala7ly/modules/screens/order/order.dart';
 import 'package:sala7ly/modules/screens/order/server.dart';
-import 'package:sala7ly/modules/screens/create_order/order_services.dart';
-import 'package:sala7ly/modules/screens/order_parts/cubit.dart';
+import 'package:sala7ly/modules/screens/order_parts/formOrder.dart';
 import 'package:sala7ly/shared/bloc.dart';
 import 'package:sala7ly/shared/componants/constant.dart';
 import 'package:sala7ly/shared/componants/showTast.dart';
@@ -29,10 +28,11 @@ import 'modules/Drawer/Drawing.dart';
 import 'modules/Drawer/profil/manage.dart';
 import 'modules/register/cubit/cubit.dart';
 import 'modules/register/register.dart';
-import 'modules/screens/create_order/cubit.dart';
 import 'modules/screens/home/animation_logo_screen/logo_screen.dart';
+import 'modules/screens/order_parts/parts.dart';
 import 'modules/screens/order_parts/payment.dart';
 import 'modules/screens/order_parts/succesful.dart';
+import 'modules/screens/order_services/cubit.dart';
 import 'modules/screens/serviceasfire/services.dart';
 import 'modules/setting/cubit/cubit.dart';
 
@@ -63,23 +63,23 @@ void main() async {
   uId = CacheHelper.getData(key: 'uId');
   await EasyLocalization.ensureInitialized();
 
+  final String userToken = CacheHelper.getData(key: 'userToken') ?? '';
   bool isDark = CacheHelper.getData(key: 'isDark') ?? false;
- // String? token= await CacheHelper.getData(key: 'token');
- // print(token);
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en', 'US'), Locale('ar', 'EG')],
       fallbackLocale: const Locale('en', 'US'),
       path: 'assets/translate',
-      child: MyApp(isDark: isDark),
+      child: MyApp(isDark: isDark,userToken:userToken),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
   final bool isDark;
-
-  const MyApp({Key? key, required this.isDark}) : super(key: key);
+  final String userToken;
+  const MyApp({Key? key,required this.isDark,required this.userToken}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,8 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => SettingsCubit(),
         ),
         BlocProvider(
-          create: (context) => sla7lyCubit(),
+          create: (context) => sla7lyCubit(userToken:
+          userToken),
         ),
         BlocProvider<RegisterCubit>(
           create: (context) => RegisterCubit(), // Replace with your actual RegisterCubit initialization
@@ -105,12 +106,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (BuildContext context) => AppCubit()..changeAppMode(fromShared: isDark),
         ),
-        BlocProvider(
-          create: (BuildContext context) => OrderCubit(),
-        ),
-        BlocProvider(
-          create: (_) => PartsBloc()..fetchProducts(),
-        ),
+        // BlocProvider(
+        //   create: (BuildContext context) => OrderCubit(),
+        // ),
+        // BlocProvider(
+        //   create: (_) => PartsBloc()..fetchProducts(),
+        // ),
 
       ],
       child: BlocConsumer<AppCubit, AppStates>(

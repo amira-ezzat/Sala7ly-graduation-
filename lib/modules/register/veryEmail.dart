@@ -85,19 +85,20 @@ class _VerifyEmailState extends State<VerifyEmail> {
              //    ),
              //  ),
               SizedBox(height: 6),
+              Text(
+                'Don’t receive the code'.tr(),
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontFamily: 'font2',
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Don’t receive the code'.tr(),
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'font2',
-                    ),
-                  ),
                   TextButton(
-                    onPressed: () {
-                      // Handle resend code action
+                    onPressed: () async {
+                      // استدعاء دالة إعادة إرسال الرمز
+                      await _resendCode();
                     },
                     child: Text(
                       'RESEND'.tr(),
@@ -107,6 +108,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                       ),
                     ),
                   ),
+
                   Text(
                     'Code',
                     style: TextStyle(
@@ -178,7 +180,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
         // Navigate to the next screen with the received userToken
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Layout(userToken: userToken)),
+          MaterialPageRoute(builder: (context) => Layout(userToken: userToken,)),
         );
 
         // Show success message using ScaffoldMessenger
@@ -212,4 +214,46 @@ class _VerifyEmailState extends State<VerifyEmail> {
       });
     }
   }
+  Future<void> _resendCode() async {
+    try {
+      final response = await Dio().post(
+        'https://sala7ly.vercel.app/userAuth/resendcode',
+        data: {
+          'email': widget.email,
+        },
+      );
+
+      // التحقق مما إذا كانت الصفحة لا تزال متواجدة قبل عرض الرسائل
+      if (!mounted) return;
+
+      if (response.statusCode == 200) {
+        // عرض رسالة نجاح باستخدام ScaffoldMessenger
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Code sent successfully').tr(),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        // عرض رسالة خطأ باستخدام ScaffoldMessenger
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to resend code: ${response.data['msg']}').tr(),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error resending code: $e');
+      // عرض رسالة خطأ عامة باستخدام ScaffoldMessenger
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An unexpected error occurred. Please try again.').tr(),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+
 }

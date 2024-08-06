@@ -1,18 +1,13 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-
-import '../../layout/layout_screen.dart';
+import 'package:sala7ly/modules/Drawer/profil/profile.dart';
 import '../../shared/componants/navegate.dart';
 import '../../shared/componants/textFormField.dart';
-import '../../shared/cubit/cubit.dart';
 import '../register/register.dart';
-import '../res_pass/resetpass.dart';
 import 'cubit/cubit.dart';
 import 'cubit/state.dart';
-
 class LoginScreen extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -27,21 +22,21 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginSuccessState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Logged in successfully').tr(),
+                content: Text('Logged in successfully'),
                 backgroundColor: Colors.green,
                 behavior: SnackBarBehavior.floating,
               ),
             );
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Layout(userToken: state.userToken),
+                builder: (context) => ProfileScreen(userToken: state.userToken,), // Pass userToken
               ),
                   (Route<dynamic> route) => false,
             );
           } else if (state is LoginErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Login failed: ${state.error}').tr(),
+                content: Text('Login failed: ${state.error}'),
                 backgroundColor: Colors.red,
                 behavior: SnackBarBehavior.floating,
               ),
@@ -51,13 +46,9 @@ class LoginScreen extends StatelessWidget {
         builder: (BuildContext context, LoginState state) {
           return Scaffold(
             appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  // navigateTo(context, FirstLogin());
-                },
+
               ),
-            ),
+
             body: SingleChildScrollView(
               child: Center(
                 child: Padding(
@@ -67,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'Sign in'.tr(),
+                          'Sign in',
                           style: TextStyle(
                             fontFamily: 'font1',
                             fontSize: 30.0,
@@ -112,10 +103,10 @@ class LoginScreen extends StatelessWidget {
                           alignment: AlignmentDirectional.centerEnd,
                           child: TextButton(
                             onPressed: () {
-                              navigateAndFinish(context, ResetPage());
+                              // navigateAndFinish(context, ResetPage());
                             },
                             child: Text(
-                              'Forget Password ?'.tr(),
+                              'Forget Password ?',
                               style: TextStyle(
                                 color: HexColor('#F0630B'),
                                 fontWeight: FontWeight.bold,
@@ -124,13 +115,10 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 6.0),
-                        ConditionalBuilder(
-                          condition: state is! LoginLoadingState,
-                          builder: (BuildContext context) => Container(
+                        if (state is! LoginLoadingState)
+                          Container(
                             decoration: BoxDecoration(
-                              color: AppCubit.get(context).isDark
-                                  ? HexColor('#F0630B')
-                                  : HexColor('#D8590A'),
+                              color: HexColor('#F0630B'),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             width: double.infinity,
@@ -144,7 +132,7 @@ class LoginScreen extends StatelessWidget {
                                 }
                               },
                               child: Text(
-                                'Sign in'.tr(),
+                                'Sign in',
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   color: Colors.white,
@@ -152,79 +140,78 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ),
-                          fallback: (BuildContext context) => Center(
+                          )
+                        else
+                          Center(
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color(0xFFF0630B)),
+                              valueColor: AlwaysStoppedAnimation<Color>(HexColor('#F0630B')),
                             ),
                           ),
-                        ),
                         SizedBox(height: 15.0),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Container(
+                        //       width: 130.0,
+                        //       height: 1.0,
+                        //       color: Colors.grey[600],
+                        //     ),
+                        //     Text('  OR  '),
+                        //     Container(
+                        //       width: 130.0,
+                        //       height: 1.0,
+                        //       color: Colors.grey[600],
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 15.0),
+                        // Text(
+                        //   'Continue with',
+                        //   style: TextStyle(
+                        //     fontSize: 15.0,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Image.asset(
+                        //         'assets/images/g.png',
+                        //         height: 20.0,
+                        //         width: 20.0,
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: 20),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.facebook,
+                        //         size: 25.0,
+                        //         color: Colors.blue,
+                        //       ),
+                        //     ),
+                        //     SizedBox(height: 20),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.apple,
+                        //         size: 28.0,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 130.0,
-                              height: 1.0,
-                              color: Colors.grey[600],
-                            ),
-                            Text('  OR  '.tr()),
-                            Container(
-                              width: 130.0,
-                              height: 1.0,
-                              color: Colors.grey[600],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.0),
-                        Text(
-                          'Continue with'.tr(),
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'assets/images/g.png',
-                                height: 20.0,
-                                width: 20.0,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.facebook,
-                                size: 25.0,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.apple,
-                                size: 28.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Don’t have an account ?'.tr()),
+                            Text('Don’t have an account ?'),
                             TextButton(
                               onPressed: () {
-                                navigateAndFinish(context, RegisterPage());
+                                 navigateAndFinish(context, RegisterPage());
                               },
                               child: Text(
-                                'Sign up'.tr(),
+                                'Sign up',
                                 style: TextStyle(
                                   color: HexColor('#F0630B'),
                                   fontFamily: 'font1',

@@ -10,10 +10,10 @@ import '../../shared/componants/navegate.dart';
 import '../../shared/cubit/cubit.dart';
 
 class Draw extends StatefulWidget {
-  final Map<String, dynamic> userData; // Add userData parameter
+  // Initialize userData in the constructor
+  final String userToken; // Add userToken here
 
-  Draw({required this.userData}); // Initialize userData in the constructor
-
+  Draw({required this.userToken});
   @override
   State<Draw> createState() => _DrawState();
 }
@@ -60,7 +60,7 @@ class _DrawState extends State<Draw> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: GestureDetector(
               onTap: () {
-                navigateTo(context, ProfileScreen(userData: widget.userData)); // Pass userData to ProfileScreen
+                navigateTo(context, ProfileScreen(userToken: widget.userToken,)); // Pass userData to ProfileScreen
               },
               onTapDown: (_) {
                 setState(() {

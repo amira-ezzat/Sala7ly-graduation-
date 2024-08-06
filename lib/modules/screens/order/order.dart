@@ -7,9 +7,9 @@ import '../../../shared/componants/navegate.dart';
 import '../order_parts/modelParts.dart';
 
 class Orders extends StatefulWidget {
-  final List<Parts> ordersList; // تعريف ordersList كمعلمة هنا
+  //final List<Parts> ordersList; // تعريف ordersList كمعلمة هنا
 
-  Orders({Key? key, required this.ordersList}) : super(key: key);
+ // Orders({Key? key, required this.ordersList}) : super(key: key);
 
   @override
   State<Orders> createState() => _OrdersState();
@@ -126,7 +126,7 @@ class _OrdersState extends State<Orders> {
             SizedBox(height: 20),
             Expanded(
               child: isArabicPressed
-                  ? OrderParts(ordersList: widget.ordersList) // عرض قائمة الطلبات لشاشة القطع
+                  ? OrderParts() // عرض قائمة الطلبات لشاشة القطع
                   : OrdersScreen(), // عنصر واجهة مستخدم بديل لشاشة الخدمات
             ),
             SizedBox(height: 20),

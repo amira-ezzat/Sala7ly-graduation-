@@ -8,9 +8,9 @@
 // import 'package:sala7ly/modules/register/register.dart';
 // import 'package:sala7ly/shared/componants/navegate.dart';
 // import 'package:sala7ly/shared/componants/textFormField.dart';
-// import '../../shared/cubit/cubit.dart';
+// import '../../shared/cubit/formOrder.dart';
 // import '../res_pass/resetpass.dart';
-// import 'cubit/cubit.dart';
+// import 'cubit/formOrder.dart';
 //
 // class LoginScreen extends StatelessWidget {
 //   var formKey = GlobalKey<FormState>();
@@ -242,9 +242,9 @@
 // import 'package:sala7ly/modules/register/register.dart';
 // import 'package:sala7ly/shared/componants/navegate.dart';
 // import 'package:sala7ly/shared/componants/textFormField.dart';
-// import '../../shared/cubit/cubit.dart';
+// import '../../shared/cubit/formOrder.dart';
 // import '../res_pass/resetpass.dart';
-// import 'cubit/cubit.dart';
+// import 'cubit/formOrder.dart';
 //
 //
 // class RegisterPage extends StatelessWidget {

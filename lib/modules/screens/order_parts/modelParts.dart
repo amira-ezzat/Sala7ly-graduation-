@@ -1,17 +1,25 @@
-class Parts {
+class SparePart {
   final String id;
-  final int total;
-  final int quantity;
+  final String title;
   final String imageUrl;
-  final String name;
-  final int price;
+  final double basePrice;
+  final double appliedPrice;
 
-  Parts( {
+  SparePart({
     required this.id,
-    required this.name,
-    required this.total,
-    required this.quantity,
+    required this.title,
     required this.imageUrl,
-    required this.price,
+    required this.basePrice,
+    required this.appliedPrice,
   });
+
+  factory SparePart.fromJson(Map<String, dynamic> json) {
+    return SparePart(
+      id: json['_id'] as String,
+      title: json['title'] as String,
+      imageUrl: json['coverImage']['secure_url'] as String,
+      basePrice: json['basePrice'].toDouble(),
+      appliedPrice: json['appliedPrice'].toDouble(),
+    );
+  }
 }
