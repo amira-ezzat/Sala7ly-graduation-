@@ -125,7 +125,7 @@ class _OrdersState extends State<Orders> {
             SizedBox(height: 20),
             Expanded(
               child: isArabicPressed
-                  ? OrderParts(userToken:widget.userToken,)
+                  ? GetParts(userToken:widget.userToken,)
                   : OrdersScreen(userToken:widget.userToken,), // عنصر واجهة مستخدم بديل لشاشة الخدمات
             ),
             SizedBox(height: 20),
