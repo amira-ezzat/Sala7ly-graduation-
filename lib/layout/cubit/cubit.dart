@@ -9,8 +9,8 @@ import '../../model/userModel.dart';
 import '../../modules/screens/home/home_screen.dart';
 import '../../modules/screens/offer.dart';
 import '../../modules/screens/order/order.dart';
-import '../../modules/screens/order_parts/modelParts.dart';
-import '../../modules/screens/order_parts/parts.dart';
+import '../../modules/screens/order_parts/parts/modelParts.dart';
+import '../../modules/screens/order_parts/parts/parts.dart';
 import '../../modules/screens/serviceasfire/services.dart';
 import '../../shared/componants/constant.dart';
 
@@ -21,9 +21,9 @@ class sla7lyCubit extends Cubit<sal7lyState> {
     screens = [
       HomeScreen(userToken: userToken,),
       Services(userToken:userToken,),
-      Orders(),
+      Orders(userToken:userToken,),
       Offers(),
-      OrderParts(),
+      OrderParts(userToken:userToken,),
     ];
   }
 

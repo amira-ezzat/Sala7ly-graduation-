@@ -5,10 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../modules/screens/home/home_screen.dart';
 import '../modules/screens/offer.dart';
 import '../modules/screens/order/order.dart';
-import '../modules/screens/order_parts/parts.dart';
+import '../modules/screens/order_parts/parts/parts.dart';
 import '../modules/screens/serviceasfire/services.dart';
 import '../shared/cubit/cubit.dart';
-import '../modules/screens/order_parts/modelParts.dart'; // تأكد من استيراد النموذج Parts
+import '../modules/screens/order_parts/parts/modelParts.dart'; // تأكد من استيراد النموذج Parts
 import '../shared/componants/constant.dart';
 import 'cubit/cubit.dart';
 import 'cubit/state.dart';
@@ -59,9 +59,9 @@ class _LayoutState extends State<Layout> {
             children: <Widget>[
               HomeScreen(userToken:widget.userToken,),
              Services(userToken:widget.userToken,),
-              Orders(),
+              Orders(userToken:widget.userToken,),
               Offers(),
-              OrderParts(),
+              OrderParts(userToken:widget.userToken,),
             ],
             physics: NeverScrollableScrollPhysics(),
           );

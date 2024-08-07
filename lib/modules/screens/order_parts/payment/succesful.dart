@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../layout/layout_screen.dart';
+import '../../../../layout/layout_screen.dart';
 
 class PaySuccess extends StatefulWidget {
   @override

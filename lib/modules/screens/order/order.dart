@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:sala7ly/modules/screens/order/part.dart';
-import 'package:sala7ly/modules/screens/order/server.dart';
+import 'package:sala7ly/modules/screens/order/parts_get/part.dart';
+import 'package:sala7ly/modules/screens/order/services_get/server.dart';
 import '../../../layout/layout_screen.dart';
 import '../../../shared/componants/navegate.dart';
-import '../order_parts/modelParts.dart';
+import '../order_parts/parts/modelParts.dart';
 
 class Orders extends StatefulWidget {
-  //final List<Parts> ordersList; // تعريف ordersList كمعلمة هنا
 
- // Orders({Key? key, required this.ordersList}) : super(key: key);
-
+  final String userToken;
+  Orders({required this.userToken});
   @override
   State<Orders> createState() => _OrdersState();
 }
@@ -126,8 +125,8 @@ class _OrdersState extends State<Orders> {
             SizedBox(height: 20),
             Expanded(
               child: isArabicPressed
-                  ? OrderParts() // عرض قائمة الطلبات لشاشة القطع
-                  : OrdersScreen(), // عنصر واجهة مستخدم بديل لشاشة الخدمات
+                  ? OrderParts(userToken:widget.userToken,)
+                  : OrdersScreen(userToken:widget.userToken,), // عنصر واجهة مستخدم بديل لشاشة الخدمات
             ),
             SizedBox(height: 20),
           ],

@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:sala7ly/modules/screens/order_parts/succesful.dart';
+import 'package:sala7ly/modules/screens/order_parts/payment/succesful.dart';
 import 'package:sala7ly/shared/componants/navegate.dart';
 
-import '../../../shared/cubit/cubit.dart';
+import '../../../../shared/cubit/cubit.dart';
 
 class Payment extends StatelessWidget {
   @override

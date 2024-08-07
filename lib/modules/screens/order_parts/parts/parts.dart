@@ -1,16 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../layout/layout_screen.dart';
-import '../../../shared/componants/navegate.dart';
-import '../../../shared/cubit/cubit.dart';
-import '../order_parts/modelParts.dart'; // تأكد من استيراد ملف الموديل الخاص بقطع الغيار
+import '../../../../layout/layout_screen.dart';
+import '../../../../shared/componants/navegate.dart';
+import '../../../../shared/cubit/cubit.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'formOrder.dart';
+import '../formOrder.dart';
+import 'modelParts.dart';
 
 class OrderParts extends StatefulWidget {
+  final String userToken;
+
+
+  OrderParts({required this.userToken});
   @override
   _OrderPartsState createState() => _OrderPartsState();
 }
@@ -56,6 +60,7 @@ class _OrderPartsState extends State<OrderParts> {
       print('Error fetching spare parts: $error');
     }
   }
+
   void _filterParts() {
     final query = searchController.text.toLowerCase();
     setState(() {
@@ -64,6 +69,7 @@ class _OrderPartsState extends State<OrderParts> {
       }).toList();
     });
   }
+
   Future<void> _searchSpareParts(String query) async {
     if (query.isEmpty) {
       setState(() {
@@ -97,15 +103,16 @@ class _OrderPartsState extends State<OrderParts> {
       print('Error searching spare parts: $error');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-              navigateTo(context, Layout(userToken: '',));
+            navigateTo(context, Layout(userToken: '',));
           },
-          icon: Icon(Icons.arrow_back_ios,color: Colors.black,),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
         ),
         title: Text(
           'Spare Parts'.tr(),
@@ -122,7 +129,6 @@ class _OrderPartsState extends State<OrderParts> {
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
-        
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -133,7 +139,6 @@ class _OrderPartsState extends State<OrderParts> {
                   borderRadius: BorderRadius.circular(40.0),
                 ),
                 child: TextField(
-
                   controller: searchController,
                   keyboardType: TextInputType.text,
                   cursorColor: Colors.grey,
@@ -204,8 +209,9 @@ class _OrderPartsState extends State<OrderParts> {
                         ),
                       ],
                     ),
-                    trailing:ElevatedButton(
+                    trailing: ElevatedButton(
                       onPressed: () {
+                        print('Spare Part ID: ${part.id}');
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -235,28 +241,8 @@ class _OrderPartsState extends State<OrderParts> {
                                       child: SingleChildScrollView(
                                         child: Column(
                                           children: [
-                                            FormOrder(),
-                                            SizedBox(height: 10),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                // قم بإضافة الكود المطلوب لتنفيذ الإجراء عند الضغط على هذا الزر
-                                                Navigator.of(context).pop(); // أغلق الحوار
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color(0xFFF0630B), // اللون البرتقالي
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10), // يمكنك تخصيص شكل الزر إذا رغبت
-                                                ),
-                                              ),
-                                              child: Text(
-                                                'Submit'.tr(),
-                                                style: TextStyle(
-                                                  fontFamily: 'font1',
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white, // لون النص الأبيض
-                                                ),
-                                              ),
-                                            ),
+                                            FormOrder(spareId: part.id, userToken: widget.userToken,),
+
                                           ],
                                         ),
                                       ),
@@ -282,10 +268,6 @@ class _OrderPartsState extends State<OrderParts> {
                         ),
                       ),
                     ),
-
-
-
-
                   );
                 },
               ),
